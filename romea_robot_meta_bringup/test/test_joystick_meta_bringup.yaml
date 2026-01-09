@@ -1,0 +1,13 @@
+name: "joystick"
+launch:
+  - include:
+      file: "$(find-pkg-share romea_joystick_meta_bringup)/profile/joy.launch.py"
+      arg:
+        - name: device
+          value: /dev/input/js0
+configuration:
+  manufacturer: microsoft
+  model: xbox
+  rate: 10
+records:
+  joy: true

@@ -1,0 +1,26 @@
+name: "lidar"
+launch:
+  - include:
+      file: "$(find-pkg-share romea_lidar_meta_bringup)/profile/sick_scan_xd_lms1xx.launch.py"
+      arg:
+        - name: ip
+          value: "192.168.1.112"
+        - name: port
+          value: "2112"
+      if: $(eval "'$(var mode)' == 'live'")
+  - include:
+      file: $(find-pkg-share romea_lidar_meta_bringup)/profile/gz_bridge.launch.py
+      if: $(eval "'$(var mode)' == 'simulation_gazebo'")
+configuration:
+  manufacturer: sick
+  model: lms
+  version: "151"
+  rate: 50 # hz
+  azimut_resolution: 0.5 # degree
+location:
+  parent_link: "base_link"
+  xyz: [2.02, 0.0, 0.34] # meters
+  rpy: [0.0, 0.0, 0.0] # degrees
+records:
+  scan: true
+  cloud: false

@@ -1,0 +1,23 @@
+name: imu
+launch:
+  - include:
+      file: "$(find-pkg-share romea_imu_meta_bringup)/profile/xsens_driver.launch.py"
+      arg:
+        - name: device
+          value: /dev/ttyUSB0
+        - name: baudrate
+          value: "115200"
+      if: $(eval "'$(var mode)' == 'live'")
+  - include:
+      file: $(find-pkg-share romea_imu_meta_bringup)/profile/gz_bridge.launch.py
+      if: $(eval "'$(var mode)' == 'simulation_gazebo'")
+configuration:
+  manufacturer: xsens
+  model: mti
+  rate: 100
+location:
+  parent_link: "base_link"
+  xyz: [0.0, 0.0, 0.7]
+  rpy: [0.0, 0.0, 0.0]
+records:
+  data: true

@@ -1,0 +1,21 @@
+name: "base"
+launch:
+  - include:
+      file: "$(find-pkg-share romea_mobile_base_meta_bringup)/profile/robot.launch.py"
+      arg:
+        - name: "joystick_topic"
+          value: "/robot/joystick/joy"
+        - name: "joystick_configuration_file_path"
+          value: "$(find-pkg-share romea_joystick_utils)/config/microsoft_xbox.yaml"
+configuration:
+  manufacturer: inrae
+  model: adap2e
+  version: one
+records:
+  joint_states: true
+  controller/odom: true
+  controller/odometry: true
+  controller/kinematic: true
+simulation:
+  initial_xyz: [0.0, 0.0, 0.0]
+  initial_rpy: [0.0, 0.0, 0.0]

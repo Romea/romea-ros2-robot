@@ -1,0 +1,33 @@
+name: gps
+launch:
+  - group:
+      children:
+          - include:
+              file: "$(find-pkg-share romea_gps_meta_bringup)/profile/romea_gps_serial_driver.launch.py"
+              arg:
+                - name: device
+                  value: /dev/ttyUSB0
+                - name: baudrate
+                  value: "115200"
+          - include:
+              file: $(find-pkg-share romea_gps_meta_bringup)/profile/ntrip_client.launch.py
+              arg:
+                - name: mountpoint
+                  value: MTLDR
+      if: $(eval "'$(var mode)' == 'live'")
+  - include:
+      file: $(find-pkg-share romea_gps_meta_bringup)/profile/gz_bridge.launch.py
+      if: $(eval "'$(var mode)' == 'simulation_gazebo'")
+
+configuration:
+  manufacturer: septentrio
+  model: asterx
+  rate: 10
+  dual_antenna: true
+location:
+  parent_link: "base_link"
+  xyz: [0.0, 0.0, 2.0]
+records:
+  nmea_sentence: true
+  gps_fix: false
+  vel: false
