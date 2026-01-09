@@ -10,6 +10,9 @@ launch:
       if: $(eval "'$(var mode)' == 'live'")
   - include:
       file: $(find-pkg-share romea_imu_meta_bringup)/profile/gz_bridge.launch.py
+      # arg:
+      #   - name: container
+      #     value: /gz_container 
       if: $(eval "'$(var mode)' == 'simulation_gazebo'")
 configuration:
   manufacturer: xsens

@@ -13,15 +13,16 @@
 # limitations under the License.
 
 import importlib
-import os
-import sys
 from io import StringIO
+import os
 import xml.etree.ElementTree as ET
 
 from ruamel.yaml import YAML
 
+
 def include_args(name, value):
-    return {"name": name, "value": value }
+    return {"name": name, "value": value}
+
 
 class RobotMetaDescription:
 
@@ -43,24 +44,17 @@ class RobotMetaDescription:
             return ET.fromstring(urdf_str)
 
         def generate_yaml_configuration(self, extended):
-            str = self.python_module.generate_configuration_file(self.meta_description, extended)
-            return {self.meta_description.get_name(): YAML().load(str)}
+            cstr = self.python_module.generate_configuration_file(self.meta_description, extended)
+            return {self.meta_description.get_name(): YAML().load(cstr)}
 
-
-        def generate_yaml_launch_file(self, additional_args =[]):
+        def generate_yaml_launch_file(self, additional_args=[]):
             arguments = [
                 include_args("mode", "$(var mode)"),
                 include_args("robot_namespace", self.meta_description.get_robot_name()),
                 include_args("meta_description_file_path", self.meta_description_file_path),
             ]
             file = f"$(find-pkg-share {self.meta_bringup_package})/launch/{self.type}.launch.py"
-            return {
-                "include": { 
-                    "file": file, 
-                    "arg": list(arguments)
-                }
-            }
-
+            return {"include": {"file": file, "arg": list(arguments)}}
 
     def __init__(self, meta_description_file_path, robot_name=None):
         self.__robot_name = str(robot_name or "")
@@ -84,40 +78,38 @@ class RobotMetaDescription:
 
 
 def generate_yaml_launch_file_str(meta_description):
-    launch_file=[]
-    launch_file.append({"arg" : {"name": "mode", "default": "live"}})
+    launch_file = []
+    launch_file.append({"arg": {"name": "mode", "default": "live"}})
     launch_file.append(meta_description.joystick.generate_yaml_launch_file())
 
     arguments = [
         include_args("mode", "$(var mode)"),
         include_args("robot_namespace", meta_description.base.meta_description.get_robot_name()),
-        include_args("mobile_base_meta_description_file_path", meta_description.base.meta_description_file_path),
-        include_args("joystick_meta_description_file_path", meta_description.joystick.meta_description_file_path),
+        include_args(
+            "mobile_base_meta_description_file_path",
+            meta_description.base.meta_description_file_path,
+        ),
+        include_args(
+            "joystick_meta_description_file_path",
+            meta_description.joystick.meta_description_file_path,
+        ),
     ]
-    # arguments = [
-    #     include_args("mode", "$(var mode)"),
-    #     include_args("robot_namespace", meta_description.base.meta_description.get_robot_name()),
-    #     include_args("mobile_base_meta_description_file_path", meta_description.base.meta_description_file_path),
-    #     include_args("joystick_meta_description_file_path", meta_description.joystick.meta_description_file_path),
-    # ],
     file = "$(find-pkg-share romea_mobile_base_meta_bringup)/launch/mobile_base.launch.py"
-    launch_file.append({
-            "include": { 
+    launch_file.append(
+        {
+            "include": {
                 "file": file,
                 "arg": list(arguments),
             }
         }
     )
 
-
-
     for device in meta_description.devices:
         launch_file.append(device.generate_yaml_launch_file())
 
-    
     yaml = YAML()
     buf = StringIO()
-    yaml.dump({"launch" : launch_file}, buf)
+    yaml.dump({"launch": launch_file}, buf)
     return buf.getvalue()
 
 
