@@ -14,9 +14,6 @@
   <depend>launch</depend>
   <depend>launch_ros</depend>
   <depend>ament_index_python</depend>
-  <depend>romea_common_meta_bringup</depend>
-  <depend>romea_lidar_description</depend>
-  <depend>sick_scan_xd</depend>
 
   <export>
     <build_type>ament_cmake</build_type>
