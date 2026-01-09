@@ -1,0 +1,4 @@
+repositories:
+  romea_ros2/tools:
+    type: git
+    url: https://github.com/Romea/romea-robot.git

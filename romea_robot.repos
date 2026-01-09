@@ -1,9 +1,4 @@
 repositories:
-  romea_core/romea_common:
+  romea_ros2/tools/romea_ros2:
     type: git
-    url: git@gitlab-ssh.irstea.fr:romea_core/romea_common.git
-    version: main
-  romea_ros2/tools/romea_common:
-    type: git
-    url: git@gitlab-ssh.irstea.fr:romea_ros2/tools/romea_common.git
-    version: main
+    url: git@forge.inrae.fr:romea_ros2/tools/romea_robot.git
