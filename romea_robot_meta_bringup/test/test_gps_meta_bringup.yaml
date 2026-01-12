@@ -13,17 +13,16 @@ launch:
               file: $(find-pkg-share romea_gps_meta_bringup)/profile/ntrip_client.launch.py
               arg:
                 - name: mountpoint
-                  value: MTLDR
+                  value: PHAC
       if: $(eval "'$(var mode)' == 'live'")
   - include:
       file: $(find-pkg-share romea_gps_meta_bringup)/profile/gz_bridge.launch.py
       if: $(eval "'$(var mode)' == 'simulation_gazebo'")
-  # - include:
-  #     file: $(find-pkg-share romea_gps_meta_bringup)/profile/localisation_plugin.launch.py
-  #     arg:
-  #       - name: odom_topic
-  #         value: /$(var robot_namespace)/base/controller/odom
-
+  - include:
+      file: $(find-pkg-share romea_gps_meta_bringup)/profile/localisation_plugin.launch.py
+      arg:
+        - name: wgs84_anchor_file_path
+          value: $(var wgs84_anchor_file_path)
 configuration:
   manufacturer: septentrio
   model: asterx

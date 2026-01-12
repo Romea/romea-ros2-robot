@@ -13,7 +13,6 @@ launch:
       if: $(eval "'$(var mode)' == 'simulation_gazebo'")
   - include:
       file: $(find-pkg-share romea_imu_meta_bringup)/profile/localisation_plugin.launch.py
-
 configuration:
   manufacturer: xsens
   model: mti

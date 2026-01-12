@@ -26,6 +26,7 @@ def launch_setup(context, *args, **kwargs):
     simulator_type = LaunchConfiguration("simulator").perform(context)
     robot_namespace = LaunchConfiguration("robot_namespace").perform(context)
     meta_description_file_path = LaunchConfiguration("meta_description_file_path").perform(context)
+    wgs84_anchor_file_path = LaunchConfiguration("wgs84_anchor_file_path").perform(context)
 
     simulation = LaunchDescription()
 
@@ -34,7 +35,10 @@ def launch_setup(context, *args, **kwargs):
             get_package_share_directory("romea_simulation_meta_bringup")
             + "/launch/simulator.launch.py"
         ),
-        launch_arguments={"simulator_type": simulator_type}.items(),
+        launch_arguments={
+            "simulator_type": simulator_type,
+            "wgs84_anchor_file_path": wgs84_anchor_file_path,
+        }.items(),
     )
 
     simulation.add_action(simulator)
@@ -72,9 +76,17 @@ def launch_setup(context, *args, **kwargs):
 
 def generate_launch_description():
 
+    default_wgs84_anchor_file_path = (
+        get_package_share_directory("romea_gps_meta_bringup") 
+        +  "/config/wgs84_anchors/inrae_aubiere.yaml"
+    )
+
     declared_arguments = [
         DeclareLaunchArgument("simulator", default_value="gazebo"),
         DeclareLaunchArgument("robot_namespace", default_value="robot"),
+        DeclareLaunchArgument(
+            "wgs84_anchor_file_path",
+            default_value=default_wgs84_anchor_file_path),
         DeclareLaunchArgument("meta_description_file_path"),
     ]
 
