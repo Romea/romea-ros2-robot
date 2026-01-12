@@ -7,6 +7,9 @@ launch:
           value: "/robot/joystick/joy"
         - name: "joystick_configuration_file_path"
           value: "$(find-pkg-share romea_joystick_utils)/config/microsoft_xbox.yaml"
+  - include:
+      file: $(find-pkg-share romea_mobile_base_meta_bringup)/profile/localisation_plugin.launch.py
+ 
 configuration:
   manufacturer: inrae
   model: adap2e

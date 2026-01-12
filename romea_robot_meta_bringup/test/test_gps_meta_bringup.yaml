@@ -18,6 +18,11 @@ launch:
   - include:
       file: $(find-pkg-share romea_gps_meta_bringup)/profile/gz_bridge.launch.py
       if: $(eval "'$(var mode)' == 'simulation_gazebo'")
+  # - include:
+  #     file: $(find-pkg-share romea_gps_meta_bringup)/profile/localisation_plugin.launch.py
+  #     arg:
+  #       - name: odom_topic
+  #         value: /$(var robot_namespace)/base/controller/odom
 
 configuration:
   manufacturer: septentrio
