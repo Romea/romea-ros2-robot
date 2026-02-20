@@ -40,7 +40,9 @@ class RobotMetaDescription:
             )
 
         def generate_xml_urdf_description(self, mode):
-            urdf_str = self.python_module.generate_urdf_description(mode, self.meta_description)
+            urdf_str = self.python_module.generate_xml_urdf_description_str(
+                mode, self.meta_description
+            )
             return ET.fromstring(urdf_str)
 
         def generate_yaml_configuration(self, extended):
@@ -75,6 +77,10 @@ class RobotMetaDescription:
         self.devices = []
         for device in description.get("devices", []):
             self.devices.append(self.Device(device, self.__robot_name))
+
+
+def load_meta_description(meta_description_file_path, robot_name=None):
+    return RobotMetaDescription(meta_description_file_path, robot_name)
 
 
 def generate_yaml_launch_file_str(meta_description):
