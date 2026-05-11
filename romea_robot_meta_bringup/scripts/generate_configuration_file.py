@@ -17,7 +17,7 @@
 import sys
 
 from romea_robot_meta_bringup.meta_description import (
-    generate_yaml_configuration_str,
+    generate_yaml_configuration_file_str,
     RobotMetaDescription,
 )
 
@@ -34,4 +34,4 @@ if __name__ == "__main__":
     extended = parameters.get("extended", "false") == "true"
     meta_description_file_path = parameters["meta_description_file_path"]
     meta_description = RobotMetaDescription(meta_description_file_path)
-    print(generate_yaml_configuration_str(meta_description, extended))
+    print(generate_yaml_configuration_file_str(meta_description, extended))

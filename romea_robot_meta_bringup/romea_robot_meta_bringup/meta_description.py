@@ -39,17 +39,19 @@ class RobotMetaDescription:
                 self.meta_description_file_path, robot_name
             )
 
-        def generate_xml_urdf_description(self, mode):
+        def generate_xml_urdf_description_str(self, mode):
             urdf_str = self.python_module.generate_xml_urdf_description_str(
                 mode, self.meta_description
             )
             return ET.fromstring(urdf_str)
 
-        def generate_yaml_configuration(self, extended):
-            cstr = self.python_module.generate_configuration_file(self.meta_description, extended)
+        def generate_yaml_configuration_file_str(self, extended):
+            cstr = self.python_module.generate_yaml_configuration_file_str(
+                self.meta_description, extended
+            )
             return {self.meta_description.get_name(): YAML().load(cstr)}
 
-        def generate_yaml_launch_file(self, additional_args=[]):
+        def generate_yaml_launch_file_str(self, additional_args=[]):
             arguments = [
                 include_args("mode", "$(var mode)"),
                 include_args("robot_namespace", self.meta_description.get_robot_name()),
@@ -86,7 +88,7 @@ def load_meta_description(meta_description_file_path, robot_name=None):
 def generate_yaml_launch_file_str(meta_description):
     launch_file = []
     launch_file.append({"arg": {"name": "mode", "default": "live"}})
-    launch_file.append(meta_description.joystick.generate_yaml_launch_file())
+    launch_file.append(meta_description.joystick.generate_yaml_launch_file_str())
 
     arguments = [
         include_args("mode", "$(var mode)"),
@@ -111,7 +113,7 @@ def generate_yaml_launch_file_str(meta_description):
     )
 
     for device in meta_description.devices:
-        launch_file.append(device.generate_yaml_launch_file())
+        launch_file.append(device.generate_yaml_launch_file_str())
 
     yaml = YAML()
     buf = StringIO()
@@ -121,22 +123,23 @@ def generate_yaml_launch_file_str(meta_description):
 
 def generate_xml_urdf_description_str(mode, meta_description):
 
-    urdf = meta_description.base.generate_xml_urdf_description(mode)
+    urdf = meta_description.base.generate_xml_urdf_description_str(mode)
 
     for device in meta_description.devices:
-        urdf.extend(device.generate_xml_urdf_description(mode))
+        # if device.type != "implement":
+        urdf.extend(device.generate_xml_urdf_description_str(mode))
 
     return ET.tostring(urdf, encoding="unicode")
 
 
-def generate_yaml_configuration_str(meta_description, extended):
+def generate_yaml_configuration_file_str(meta_description, extended):
 
     config = {}
-    config.update(meta_description.base.generate_yaml_configuration(extended))
+    config.update(meta_description.base.generate_yaml_configuration_file_str(extended))
     # config.update(meta_description.joystick.generate_yaml_configuration(extended))
 
     for device in meta_description.devices:
-        config.update(device.generate_yaml_configuration(extended))
+        config.update(device.generate_yaml_configuration_file_str(extended))
 
     yaml = YAML()
     buf = StringIO()
