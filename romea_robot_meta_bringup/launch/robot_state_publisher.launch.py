@@ -32,7 +32,7 @@ def launch_setup(context, *args, **kwargs):
     for device in robot_meta_description.devices:
         if device.type == "arm":
             device_name = device.meta_description.get_name()
-            joint_states_source_list = [f"{device_name}/joint_states"]
+            joint_states_source_list.append(f"{device_name}/joint_states")
 
     joint_state_publisher = Node(
         package="joint_state_publisher",
