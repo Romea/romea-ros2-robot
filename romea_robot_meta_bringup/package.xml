@@ -3,7 +3,7 @@
 <package format="3">
   <name>romea_robot_meta_bringup</name>
   <version>0.0.0</version>
-  <description>Package containing lidar launch files.</description>
+  <description>Package containing robot meta-bringup launch files and generators.</description>
 
   <maintainer email="jean.laneurit@inrae.fr">Jean Laneurit</maintainer>
 
